@@ -45,10 +45,12 @@ let worldSize = 600;
 
 let setup = env => {
   Env.size(~width=worldSize, ~height=worldSize, env);
+  /* generateFruits should set these values and load the images */
   let fruit = {
     fruitType: Orange,
     fruitShape: Circle,
-    fruitX: 80.,
+    /* These could be Tuples (x, y) */
+    fruitX: 80., /* Random.float */
     fruitY: float_of_int(worldSize),
     fruitXV: 100.,
     fruitYV: (-80.) *. gravity,
@@ -89,6 +91,7 @@ let draw = ({fruits}, env) => {
   Draw.background(Utils.color(~r=199, ~g=217, ~b=229, ~a=255), env);
   Draw.fill(Utils.color(~r=41, ~g=166, ~b=244, ~a=255), env);
   Draw.text(~body=string_of_float(timeStep), ~pos=(10, 10), env);
+  /* Add an explosion */
   let fruitImgs =
     switch (fruit.fruitType, sliced) {
     | (Orange, false) => [

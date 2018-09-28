@@ -38,7 +38,7 @@ type fruit = {
   sliced: bool,
 };
 
-type state = {fruit};
+type state = {fruits: list(fruit)};
 
 let gravity = 5.;
 let worldSize = 600;
@@ -54,18 +54,20 @@ let setup = env => {
     fruitYV: (-80.) *. gravity,
     sliced: false,
   };
-  {fruit: fruit};
+  {fruits: [fruit]};
 };
 
-let draw = ({fruit}, env) => {
+let draw = ({fruits}, env) => {
   let timeStep = Env.deltaTime(env);
-  let fruit =
+  let fruits =
     if (Env.keyPressed(Space, env)) {
-      let {fruit} = setup(env);
-      fruit;
+      let {fruits} = setup(env);
+      fruits;
     } else {
-      fruit;
+      fruits;
     };
+
+  let fruit = List.hd(fruits);
 
   /* Do Stuff */
   let sliced = Env.mousePressed(env) || fruit.sliced;
@@ -86,6 +88,7 @@ let draw = ({fruit}, env) => {
   /* Draw Stuff */
   Draw.background(Utils.color(~r=199, ~g=217, ~b=229, ~a=255), env);
   Draw.fill(Utils.color(~r=41, ~g=166, ~b=244, ~a=255), env);
+  Draw.text(~body=string_of_float(timeStep), ~pos=(10, 10), env);
   let fruitImgs =
     switch (fruit.fruitType, sliced) {
     | (Orange, false) => [
@@ -120,7 +123,7 @@ let draw = ({fruit}, env) => {
     };*/
 
   /* Return the State */
-  {fruit: nextFruit};
+  {fruits: [nextFruit]};
 };
 
 run(~setup, ~draw, ());
